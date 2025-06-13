@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import Interactive3DScene from '../components/common/Interactive3DScene';
 
 const HomePage = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -60,7 +61,7 @@ const HomePage = () => {
     {
       name: 'Sarah Johnson',
       role: 'Fashion Designer',
-      avatar: '👩‍🎨',
+      avatar: 'https://randomuser.me/api/portraits/women/44.jpg',
       text: 'E-Store has completely transformed my shopping experience. The quality is outstanding and delivery is always on time!',
       rating: 5,
       location: 'New York, USA'
@@ -68,7 +69,7 @@ const HomePage = () => {
     {
       name: 'Michael Chen',
       role: 'Tech Entrepreneur',
-      avatar: '👨‍💻',
+      avatar: 'https://randomuser.me/api/portraits/men/32.jpg',
       text: 'Amazing selection of tech products with competitive prices. Customer service is exceptional - highly recommended!',
       rating: 5,
       location: 'San Francisco, USA'
@@ -76,10 +77,26 @@ const HomePage = () => {
     {
       name: 'Emma Wilson',
       role: 'Interior Designer',
-      avatar: '👩‍🏠',
+      avatar: 'https://randomuser.me/api/portraits/women/68.jpg',
       text: 'Found everything I needed for my home renovation project. The quality exceeded my expectations!',
       rating: 5,
       location: 'London, UK'
+    },
+    {
+      name: 'David Rodriguez',
+      role: 'Small Business Owner',
+      avatar: 'https://randomuser.me/api/portraits/men/56.jpg',
+      text: 'Excellent customer service and fast shipping. I recommend E-Store to all my friends and family!',
+      rating: 5,
+      location: 'Miami, USA'
+    },
+    {
+      name: 'Lisa Anderson',
+      role: 'Marketing Manager',
+      avatar: 'https://randomuser.me/api/portraits/women/25.jpg',
+      text: 'The product variety is amazing and the prices are unbeatable. My go-to online store!',
+      rating: 5,
+      location: 'Toronto, Canada'
     }
   ];
 
@@ -293,21 +310,7 @@ const HomePage = () => {
             </div>
             <div className="col-lg-6">
               <div className="hero-image position-relative">
-                <div style={{
-                  width: '100%',
-                  height: '500px',
-                  background: 'rgba(255,255,255,0.1)',
-                  borderRadius: '30px',
-                  backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(255,255,255,0.2)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '4rem',
-                  color: 'rgba(255,255,255,0.7)'
-                }}>
-                  🛍️
-                </div>
+                <Interactive3DScene />
               </div>
             </div>
           </div>
@@ -716,47 +719,225 @@ const HomePage = () => {
               maxWidth: '600px',
               margin: '0 auto'
             }}>
-              Real feedback from our amazing community
+              Real feedback from our amazing community of {testimonials.length * 1000}+ customers
             </p>
-          </div
-          >
-          <div style={{ position: 'relative', maxWidth: '800px', margin: '0 auto' }}>
+          </div>
+          
+          <div style={{ position: 'relative', maxWidth: '900px', margin: '0 auto' }}>
             <div style={{
               background: '#ffffff',
-              borderRadius: '24px',
-              padding: '40px',
+              borderRadius: '32px',
+              padding: '48px 40px',
               textAlign: 'center',
-              boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
-              border: '1px solid #e2e8f0'
+              boxShadow: '0 25px 50px rgba(0,0,0,0.08)',
+              border: '1px solid #e2e8f0',
+              position: 'relative',
+              overflow: 'hidden'
             }}>
-              <div style={{ fontSize: '3rem', marginBottom: '20px' }}>
-                {testimonials[currentSlide].avatar}
+              {/* Background Pattern */}
+              <div style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: '4px',
+                background: 'linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899)',
+                opacity: 0.6
+              }}></div>
+              
+              {/* Customer Photo */}
+              <div style={{ 
+                width: '120px',
+                height: '120px',
+                borderRadius: '50%',
+                margin: '0 auto 24px',
+                overflow: 'hidden',
+                border: '5px solid #ffffff',
+                boxShadow: '0 15px 35px rgba(0,0,0,0.15)',
+                position: 'relative',
+                background: 'linear-gradient(135deg, #f8fafc, #e2e8f0)'
+              }}>
+                <img 
+                  src={testimonials[currentSlide].avatar} 
+                  alt={`${testimonials[currentSlide].name} - Customer Photo`}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    transition: 'all 0.5s ease',
+                    transform: 'scale(1.05)'
+                  }}
+                  onError={(e) => {
+                    // Fallback to initials if image fails to load
+                    e.target.style.display = 'none';
+                    const fallback = e.target.nextElementSibling;
+                    if (fallback) fallback.style.display = 'flex';
+                  }}
+                  onLoad={(e) => {
+                    e.target.style.transform = 'scale(1)';
+                  }}
+                />
+                <div style={{
+                  display: 'none',
+                  width: '100%',
+                  height: '100%',
+                  background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#ffffff',
+                  fontSize: '2.5rem',
+                  fontWeight: '800',
+                  position: 'absolute',
+                  top: 0,
+                  left: 0
+                }}>
+                  {testimonials[currentSlide].name.split(' ').map(n => n[0]).join('')}
+                </div>
               </div>
+
+              {/* Quote Icon */}
+              <div style={{
+                fontSize: '3rem',
+                color: 'rgba(59, 130, 246, 0.2)',
+                marginBottom: '16px',
+                lineHeight: 1
+              }}>
+                "
+              </div>
+              
+              {/* Testimonial Text */}
               <p style={{
-                fontSize: '1.3rem',
+                fontSize: '1.4rem',
                 fontStyle: 'italic',
                 color: '#374151',
-                marginBottom: '24px',
-                lineHeight: '1.6'
+                marginBottom: '32px',
+                lineHeight: '1.7',
+                maxWidth: '600px',
+                margin: '0 auto 32px'
               }}>
-                "{testimonials[currentSlide].text}"
+                {testimonials[currentSlide].text}
               </p>
-              <div style={{ marginBottom: '16px' }}>
+              
+              {/* Rating Stars */}
+              <div style={{ marginBottom: '20px' }}>
                 {[...Array(5)].map((_, i) => (
-                  <span key={i} style={{ 
-                    color: '#fbbf24',
-                    fontSize: '20px',
-                    marginRight: '4px'
-                  }}>★</span>
+                  <span 
+                    key={i} 
+                    style={{ 
+                      color: i < testimonials[currentSlide].rating ? '#fbbf24' : '#e5e7eb',
+                      fontSize: '24px',
+                      marginRight: '4px',
+                      textShadow: '0 1px 2px rgba(0,0,0,0.1)'
+                    }}
+                  >
+                    ★
+                  </span>
                 ))}
               </div>
-              <h5 style={{ fontWeight: '700', color: '#1e293b', marginBottom: '8px' }}>
-                {testimonials[currentSlide].name}
-              </h5>
-              <p style={{ color: '#64748b', fontSize: '14px', margin: '0' }}>
-                {testimonials[currentSlide].role} • {testimonials[currentSlide].location}
-              </p>
+              
+              {/* Customer Info */}
+              <div>
+                <h5 style={{ 
+                  fontWeight: '800', 
+                  color: '#1e293b', 
+                  marginBottom: '8px',
+                  fontSize: '1.2rem'
+                }}>
+                  {testimonials[currentSlide].name}
+                </h5>
+                <p style={{ 
+                  color: '#3b82f6', 
+                  fontSize: '15px', 
+                  margin: '0 0 4px',
+                  fontWeight: '600'
+                }}>
+                  {testimonials[currentSlide].role}
+                </p>
+                <p style={{ 
+                  color: '#94a3b8', 
+                  fontSize: '14px', 
+                  margin: '0',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '6px'
+                }}>
+                  <span style={{ fontSize: '12px' }}>📍</span>
+                  {testimonials[currentSlide].location}
+                </p>
+              </div>
             </div>
+            
+            {/* Navigation Arrows */}
+            <button
+              onClick={() => setCurrentSlide(currentSlide === 0 ? testimonials.length - 1 : currentSlide - 1)}
+              style={{
+                position: 'absolute',
+                left: '-20px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                width: '48px',
+                height: '48px',
+                borderRadius: '50%',
+                background: '#ffffff',
+                border: '2px solid #e2e8f0',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '18px',
+                color: '#3b82f6',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                transition: 'all 0.3s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.background = '#3b82f6';
+                e.target.style.color = '#ffffff';
+                e.target.style.transform = 'translateY(-50%) scale(1.1)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.background = '#ffffff';
+                e.target.style.color = '#3b82f6';
+                e.target.style.transform = 'translateY(-50%) scale(1)';
+              }}
+            >
+              ‹
+            </button>
+
+            <button
+              onClick={() => setCurrentSlide(currentSlide === testimonials.length - 1 ? 0 : currentSlide + 1)}
+              style={{
+                position: 'absolute',
+                right: '-20px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                width: '48px',
+                height: '48px',
+                borderRadius: '50%',
+                background: '#ffffff',
+                border: '2px solid #e2e8f0',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '18px',
+                color: '#3b82f6',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                transition: 'all 0.3s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.background = '#3b82f6';
+                e.target.style.color = '#ffffff';
+                e.target.style.transform = 'translateY(-50%) scale(1.1)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.background = '#ffffff';
+                e.target.style.color = '#3b82f6';
+                e.target.style.transform = 'translateY(-50%) scale(1)';
+              }}
+            >
+              ›
+            </button>
             
             {/* Dots Indicator */}
             <div className="d-flex justify-content-center mt-4">
@@ -765,12 +946,12 @@ const HomePage = () => {
                   key={index}
                   onClick={() => setCurrentSlide(index)}
                   style={{
-                    width: '12px',
+                    width: index === currentSlide ? '32px' : '12px',
                     height: '12px',
-                    borderRadius: '50%',
+                    borderRadius: '6px',
                     border: 'none',
                     background: index === currentSlide ? '#3b82f6' : '#cbd5e1',
-                    margin: '0 6px',
+                    margin: '0 4px',
                     cursor: 'pointer',
                     transition: 'all 0.3s ease'
                   }}
@@ -1067,6 +1248,8 @@ const HomePage = () => {
     </div>
   );
 };
+
+
 
 export default HomePage;
 
